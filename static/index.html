@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RFPilot | Autonomous B2B RFP & Security Questionnaire Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
+  
+  <!-- Navigation Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i class="fa-solid fa-file-shield text-white text-lg"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-xl tracking-tight text-white">RFPilot</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-medium">B2B Agent</span>
+          </div>
+          <p class="text-xs text-slate-400">Autonomous Enterprise Questionnaire Automation</p>
+        </div>
+      </div>
+
+      <!-- Nav Tabs -->
+      <nav class="hidden md:flex space-x-1 bg-slate-800/60 p-1 rounded-xl border border-slate-700/50">
+        <button onclick="switchTab('filler')" id="tab-btn-filler" class="nav-tab active px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-white bg-indigo-600 shadow">
+          <i class="fa-solid fa-bolt mr-2 text-indigo-200"></i>RFP Auto-Pilot
+        </button>
+        <button onclick="switchTab('knowledge')" id="tab-btn-knowledge" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200">
+          <i class="fa-solid fa-database mr-2 text-slate-400"></i>Knowledge Base
+        </button>
+        <button onclick="switchTab('api')" id="tab-btn-api" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200">
+          <i class="fa-solid fa-code mr-2 text-slate-400"></i>API & Webhooks
+        </button>
+        <button onclick="switchTab('settings')" id="tab-btn-settings" class="nav-tab px-4 py-1.5 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200">
+          <i class="fa-solid fa-sliders mr-2 text-slate-400"></i>Settings
+        </button>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center space-x-3">
+        <button onclick="loadSampleDemo()" class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-slate-600 px-3 py-2 rounded-lg text-slate-300 transition flex items-center shadow-sm">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-400 mr-2"></i>1-Click Demo
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metric Badges Strip -->
+  <div class="border-b border-slate-800/60 bg-slate-900/40">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between text-xs text-slate-400 gap-4">
+      <div class="flex items-center space-x-6">
+        <span class="flex items-center"><i class="fa-solid fa-clock text-indigo-400 mr-2"></i>Average Time Saved: <strong class="text-white ml-1 font-semibold">18.5 hrs / RFP</strong></span>
+        <span class="flex items-center"><i class="fa-solid fa-dollar-sign text-emerald-400 mr-2"></i>Avg. Cost Savings: <strong class="text-emerald-400 ml-1 font-semibold">92% vs Agency</strong></span>
+        <span class="flex items-center"><i class="fa-solid fa-shield-halved text-cyan-400 mr-2"></i>Answer Verification: <strong class="text-white ml-1 font-semibold">Ground-Truth Cited</strong></span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span id="active-provider-pill" class="text-slate-300">Engine: Groq / Llama 3.3 (Free Tier Ready)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ==================== TAB 1: RFP AUTO-PILOT ==================== -->
+    <div id="tab-filler" class="tab-pane active space-y-8">
+      
+      <!-- Banner / Upload Section -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950/30 to-slate-900 rounded-2xl border border-indigo-900/40 p-6 md:p-8 shadow-xl relative overflow-hidden">
+        <div class="max-w-3xl">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-4">
+            <i class="fa-solid fa-sparkles"></i> Instant B2B Questionnaire Engine
+          </div>
+          <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+            Fill 100-Question RFPs in <span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-300">Seconds</span>.
+          </h1>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+            Upload your customer's Excel, Word, or CSV vendor security questionnaire. Our agent indexes your company's knowledge base, formulates compliant answers, cites documentation, and outputs the completed file ready to send.
+          </p>
+        </div>
+
+        <!-- Upload Dropzone & Controls -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div class="md:col-span-2">
+            <div id="rfp-dropzone" onclick="document.getElementById('rfp-file-input').click()" class="border-2 border-dashed border-indigo-500/40 hover:border-indigo-400 bg-indigo-950/20 hover:bg-indigo-950/30 rounded-xl p-8 text-center cursor-pointer transition-all duration-200 group">
+              <input type="file" id="rfp-file-input" class="hidden" accept=".xlsx,.xls,.csv,.docx" onchange="handleRfpUpload(this.files[0])">
+              <div class="w-14 h-14 rounded-full bg-indigo-600/20 group-hover:bg-indigo-600/30 text-indigo-400 flex items-center justify-center mx-auto mb-4 transition">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+              </div>
+              <p class="font-semibold text-white text-base mb-1">Click to upload RFP / Questionnaire</p>
+              <p class="text-xs text-slate-400">Supports Excel (.xlsx, .xls), Word (.docx), or CSV</p>
+            </div>
+          </div>
+
+          <!-- Quick Actions Card -->
+          <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <h3 class="text-sm font-semibold text-white mb-2 flex items-center">
+                <i class="fa-solid fa-bolt-lightning text-amber-400 mr-2"></i>Quick Test
+              </h3>
+              <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                Don't have an RFP file right now? Load our pre-configured Acme Security & Architecture questionnaire with 1 click.
+              </p>
+            </div>
+            <button onclick="loadSampleDemo()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs py-3 px-4 rounded-lg shadow-lg shadow-indigo-600/20 transition flex items-center justify-center">
+              <i class="fa-solid fa-play mr-2"></i>Load Sample RFP & Whitepaper
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Project & Results Section (Hidden until file loaded) -->
+      <div id="project-container" class="hidden space-y-6">
+        
+        <!-- Action Bar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-md">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+              <i class="fa-solid fa-file-excel text-lg"></i>
+            </div>
+            <div>
+              <p id="active-filename" class="font-semibold text-sm text-white">sample_questionnaire.xlsx</p>
+              <p class="text-xs text-slate-400"><span id="active-count" class="font-medium text-indigo-400">0</span> questions detected</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-3">
+            <button id="btn-process-all" onclick="processAllQuestions()" class="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white text-xs font-semibold py-2.5 px-5 rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center">
+              <i class="fa-solid fa-microchip-ai mr-2"></i>Auto-Answer All with AI Agent
+            </button>
+            <button id="btn-export-file" onclick="exportFilledRFP()" class="hidden bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2.5 px-5 rounded-lg shadow-lg shadow-emerald-600/20 transition flex items-center">
+              <i class="fa-solid fa-download mr-2"></i>Export Completed File
+            </button>
+          </div>
+        </div>
+
+        <!-- Processing Progress Bar -->
+        <div id="progress-container" class="hidden bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
+          <div class="flex justify-between text-xs">
+            <span class="text-slate-300 font-medium flex items-center">
+              <i class="fa-solid fa-spinner fa-spin text-indigo-400 mr-2"></i>Agent Processing Questions...
+            </span>
+            <span id="progress-text" class="text-indigo-400 font-semibold">0%</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-cyan-400 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Questions & Answers Table -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-800/80 text-slate-300 uppercase tracking-wider font-semibold border-b border-slate-700/60">
+                <tr>
+                  <th class="py-3 px-4 w-16">ID</th>
+                  <th class="py-3 px-4 w-32">Section</th>
+                  <th class="py-3 px-4 w-2/5">Question / Requirement</th>
+                  <th class="py-3 px-4">RFPilot AI Answer</th>
+                  <th class="py-3 px-4 w-28 text-center">Confidence</th>
+                  <th class="py-3 px-4 w-24 text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody id="questions-tbody" class="divide-y divide-slate-800 text-slate-300">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 2: KNOWLEDGE BASE ==================== -->
+    <div id="tab-knowledge" class="tab-pane hidden space-y-6">
+      
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <h2 class="text-xl font-bold text-white mb-2 flex items-center">
+          <i class="fa-solid fa-book-bookmark text-indigo-400 mr-2"></i>Company Knowledge Hub
+        </h2>
+        <p class="text-xs text-slate-400 mb-6 max-w-2xl leading-relaxed">
+          Upload your company's security policies, SOC2/ISO compliance documents, whitepapers, technical specifications, and FAQs. The agent indexes these documents to provide verified, accurate responses.
+        </p>
+
+        <!-- Knowledge Upload Dropzone -->
+        <div id="kb-dropzone" onclick="document.getElementById('kb-file-input').click()" class="border-2 border-dashed border-slate-700 hover:border-indigo-400 bg-slate-800/40 hover:bg-slate-800/80 rounded-xl p-8 text-center cursor-pointer transition">
+          <input type="file" id="kb-file-input" class="hidden" multiple accept=".txt,.md,.docx,.xlsx,.csv,.json" onchange="handleKbUpload(this.files)">
+          <div class="w-12 h-12 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mx-auto mb-3">
+            <i class="fa-solid fa-folder-plus text-xl"></i>
+          </div>
+          <p class="font-medium text-white text-sm mb-1">Click to upload knowledge docs</p>
+          <p class="text-xs text-slate-400">Supports .txt, .md, .docx, .xlsx, .csv, .json</p>
+        </div>
+
+        <!-- Indexed Documents List -->
+        <div class="mt-8">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-white flex items-center">
+              <i class="fa-solid fa-list-check text-cyan-400 mr-2"></i>Indexed Documents
+            </h3>
+            <button onclick="clearKnowledgeBase()" class="text-xs text-rose-400 hover:text-rose-300 font-medium">
+              <i class="fa-solid fa-trash-can mr-1"></i>Clear All Documents
+            </button>
+          </div>
+
+          <div id="kb-list" class="space-y-2">
+            <div class="text-center py-8 text-slate-500 text-xs">No documents uploaded yet. Upload your docs or click "1-Click Demo" to seed sample data.</div>
+          </div>
+        </div>
+
+        <!-- Instant Test Query Tool -->
+        <div class="mt-8 border-t border-slate-800 pt-6">
+          <h3 class="text-sm font-semibold text-white mb-2 flex items-center">
+            <i class="fa-solid fa-magnifying-glass text-indigo-400 mr-2"></i>Test Knowledge Retrieval
+          </h3>
+          <p class="text-xs text-slate-400 mb-3">Type any security or product question to see how the agent retrieves answers from your docs:</p>
+          <div class="flex space-x-2">
+            <input type="text" id="kb-test-input" placeholder="e.g. What encryption do we use for data at rest?" class="bg-slate-950 border border-slate-700 rounded-lg px-4 py-2 text-xs text-white flex-1 focus:outline-none focus:border-indigo-500">
+            <button onclick="testKnowledgeQuery()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2 rounded-lg font-medium transition">
+              Search & Answer
+            </button>
+          </div>
+          <div id="kb-test-result" class="hidden mt-4 bg-slate-950 border border-slate-800 p-4 rounded-lg text-xs space-y-2">
+            <p class="text-indigo-400 font-semibold flex items-center"><i class="fa-solid fa-robot mr-2"></i>Agent Answer:</p>
+            <p id="kb-test-answer" class="text-slate-200 leading-relaxed"></p>
+            <p id="kb-test-sources" class="text-slate-500 text-[11px]"></p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== TAB 3: API & INTEGRATIONS ==================== -->
+    <div id="tab-api" class="tab-pane hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white mb-2 flex items-center">
+            <i class="fa-solid fa-code text-cyan-400 mr-2"></i>B2B Developer API
+          </h2>
+          <p class="text-xs text-slate-400 max-w-2xl leading-relaxed">
+            Integrate questionnaire automation directly into your customer portal, CRM, or Slack bots. Clients can send questions programmatically and receive compliant, formatted answers.
+          </p>
+        </div>
+
+        <!-- Code Snippet: cURL -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs text-slate-400">
+            <span class="font-mono text-indigo-300 font-semibold">POST /api/rfp/answer-single</span>
+            <span>cURL Example</span>
+          </div>
+          <pre class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-xs font-mono text-emerald-400 overflow-x-auto">curl -X POST "http://localhost:8000/api/rfp/answer-single" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "question": "What encryption standard is used for data at rest and in transit?",
+       "section": "Security"
+     }'</pre>
+        </div>
+
+        <!-- Code Snippet: Python -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs text-slate-400">
+            <span class="font-mono text-indigo-300 font-semibold">Python Integration</span>
+            <span>FastAPI / requests</span>
+          </div>
+          <pre class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-xs font-mono text-cyan-300 overflow-x-auto">import requests
+
+url = "http://localhost:8000/api/rfp/answer-single"
+payload = {
+    "question": "Do you support SAML 2.0 Single Sign-On (SSO)?",
+    "section": "Authentication"
+}
+
+response = requests.post(url, json=payload)
+data = response.json()
+
+print("Answer:", data["answer"])
+print("Confidence:", data["confidence"])
+print("Evidence:", data["sources"])</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: SETTINGS ==================== -->
+    <div id="tab-settings" class="tab-pane hidden space-y-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl max-w-2xl space-y-6">
+        <div>
+          <h2 class="text-xl font-bold text-white mb-2 flex items-center">
+            <i class="fa-solid fa-sliders text-indigo-400 mr-2"></i>AI Engine & Cloud Configuration
+          </h2>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Configure your AI provider. Use 100% Free Groq or Gemini cloud APIs for 24/7 autonomous cloud hosting, or local Ollama for offline use.
+          </p>
+        </div>
+
+        <form id="settings-form" onsubmit="saveSettings(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Active AI Provider</label>
+            <select id="settings-provider" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+              <option value="groq">Groq Cloud (Free Tier - Blazing Fast Llama 3.3 70B)</option>
+              <option value="gemini">Google Gemini (Free Tier - Gemini 1.5 Flash)</option>
+              <option value="ollama">Local Ollama (Offline - Llama 3.2 on host)</option>
+              <option value="openai">OpenAI (GPT-4o Mini)</option>
+              <option value="local_engine">Built-in Semantic Synthesizer (Zero Keys Required)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Groq API Key (Free at console.groq.com)</label>
+            <input type="password" id="settings-groq-key" placeholder="gsk_..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Gemini API Key (Free at aistudio.google.com)</label>
+            <input type="password" id="settings-gemini-key" placeholder="AIzaSy..." class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Ollama Host URL</label>
+            <input type="text" id="settings-ollama-url" value="http://localhost:11434" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs py-2.5 px-6 rounded-lg shadow-lg shadow-indigo-600/30 transition flex items-center">
+            <i class="fa-solid fa-check mr-2"></i>Save Configuration
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
