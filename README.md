@@ -1,3 +1,13 @@
+---
+title: RFPilot - B2B RFP Agent
+emoji: 🚀
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # 🚀 RFPilot — Autonomous B2B RFP & Security Questionnaire Agent
 
 **RFPilot** is an AI agent platform that enables B2B companies, SaaS startups, and vendors to complete 50-to-150 question RFPs (Requests for Proposal) and Vendor Security Questionnaires (SOC2, ISO 27001, GDPR, IT Architecture) in minutes instead of weeks.

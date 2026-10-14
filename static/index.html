@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RFPilot | Autonomous B2B RFP & Security Questionnaire Agent</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-indigo-500 selection:text-white">
   
@@ -61,7 +62,7 @@
       </div>
       <div class="flex items-center space-x-2">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span id="active-provider-pill" class="text-slate-300">Engine: Groq / Llama 3.3 (Free Tier Ready)</span>
+        <span id="active-provider-pill" class="text-slate-300">Engine: Groq / Llama 3.3 (24/7 Cloud Ready)</span>
       </div>
     </div>
   </div>
@@ -307,9 +308,9 @@ print("Evidence:", data["sources"])</pre>
             <select id="settings-provider" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
               <option value="groq">Groq Cloud (Free Tier - Blazing Fast Llama 3.3 70B)</option>
               <option value="gemini">Google Gemini (Free Tier - Gemini 1.5 Flash)</option>
-              <option value="ollama">Local Ollama (Offline - Llama 3.2 on host)</option>
               <option value="openai">OpenAI (GPT-4o Mini)</option>
-              <option value="local_engine">Built-in Semantic Synthesizer (Zero Keys Required)</option>
+              <option value="ollama">Local Ollama (Offline - Llama 3.2 on host)</option>
+              <option value="local_engine" selected>Built-in Semantic Synthesizer (Zero Keys Required)</option>
             </select>
           </div>
 
@@ -337,6 +338,6 @@ print("Evidence:", data["sources"])</pre>
 
   </main>
 
-  <script src="/static/app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

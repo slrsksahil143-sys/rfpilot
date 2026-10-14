@@ -54,6 +54,20 @@ async def serve_index():
         return HTMLResponse(content=index_file.read_text(encoding="utf-8"))
     return HTMLResponse(content="<h1>RFPilot backend is running. Frontend static files pending.</h1>")
 
+@app.get("/style.css")
+async def serve_css():
+    css_file = STATIC_DIR / "style.css"
+    if css_file.exists():
+        return FileResponse(css_file, media_type="text/css")
+    return HTMLResponse("", status_code=404)
+
+@app.get("/app.js")
+async def serve_js():
+    js_file = STATIC_DIR / "app.js"
+    if js_file.exists():
+        return FileResponse(js_file, media_type="application/javascript")
+    return HTMLResponse("", status_code=404)
+
 # ----------------- KNOWLEDGE BASE ENDPOINTS -----------------
 
 @app.post("/api/knowledge/upload")
@@ -199,7 +213,6 @@ async def export_rfp(req: ExportRequest):
     else:
         # Default to Excel export
         export_path = export_path.with_suffix(".xlsx")
-        # create mock workbook
         import openpyxl
         wb = openpyxl.Workbook()
         ws = wb.active
@@ -220,7 +233,6 @@ async def export_rfp(req: ExportRequest):
 @app.get("/api/settings")
 async def get_settings():
     curr = load_settings()
-    # Mask API keys slightly for safety
     masked = curr.model_copy()
     if masked.groq_api_key:
         masked.groq_api_key = masked.groq_api_key[:6] + "..." + masked.groq_api_key[-4:]
@@ -277,7 +289,6 @@ async def load_sample_dataset():
     ]
 
     project_id = "sample-demo-project"
-    # Create sample excel file for export
     import openpyxl
     wb = openpyxl.Workbook()
     ws = wb.active
